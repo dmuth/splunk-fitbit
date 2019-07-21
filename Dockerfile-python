@@ -1,0 +1,15 @@
+#
+# Build our container to run the Python script that parses Fitbit logs
+#
+
+FROM alpine:latest
+
+RUN apk add bash python3
+
+RUN mkdir /app
+
+COPY bin/parse-fitbit-logs.py /app/
+COPY entrypoint.sh /
+
+ENTRYPOINT ["/entrypoint.sh"]
+
