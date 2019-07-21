@@ -16,6 +16,7 @@ SPLUNK_DATA=${SPLUNK_DATA:-splunk-data}
 DOCKER_IT=""
 DOCKER_V=""
 
+DEVEL_PYTHON=""
 DEVEL_SPLUNK=""
 
 if test ! "$SPLUNK_START_ARGS" -o "$SPLUNK_START_ARGS" != "--accept-license"
@@ -46,12 +47,36 @@ fi
 
 
 ARG1=""
-ARG2=""
 
-if test "$1" == "--devel-splunk"
+if test "$1" == "--devel-python"
+then
+	DOCKER_IT="-it"
+	DOCKER_V="-v $(pwd)/bin:/app"
+	DEVEL_PYTHON=1
+	ARG1="--devel"
+
+elif test "$1" == "--devel-splunk"
 then
 	DEVEL_SPLUNK=1
+	ARG1="--devel"
+
 fi
+
+echo "# "
+echo "# Parsing Fitbit logs..."
+echo "# "
+DOCKER_V_MNT="-v $(pwd):/mnt"
+DOCKER_V_LOGS="-v $(pwd)/logs:/logs"
+if test ! "$DEVEL_SPLUNK"
+then
+	docker run ${DOCKER_IT} ${DOCKER_V} ${DOCKER_V_LOGS} -v $(pwd):/mnt  dmuth1/splunk-fitbit-python $ARG1 $@
+fi
+
+if test "$DEVEL_PYTHON"
+then
+	exit 1
+fi
+
 
 
 #
