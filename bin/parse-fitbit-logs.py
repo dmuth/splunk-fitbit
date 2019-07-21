@@ -21,7 +21,6 @@ logging.basicConfig(level = logging.INFO, format='%(asctime)s.%(msecs)03d: %(lev
 	datefmt = '%Y-%m-%d %H:%M:%S'
 	)
 
-
 parser = argparse.ArgumentParser(description = 
 	"Parse Fitbit logs and write them out in files for Splunk")
 parser.add_argument('--directory', metavar = 'DIRECTORY', type = str, required = True,
@@ -31,7 +30,11 @@ parser.add_argument('--num-days-sleep', type = int, default = 90,
 parser.add_argument('--num-days-heartrate', type = int, default = 30,
                     help = "How many days of heartrate data to process (default: 30)")
 
-args = parser.parse_args()
+try:
+	args = parser.parse_args()
+except SystemExit:
+	sys.exit(1)
+
 logging.info("Args: {}".format(args))
 
 
