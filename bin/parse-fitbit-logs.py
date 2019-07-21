@@ -60,6 +60,14 @@ def sleepRowToData(row):
 def loopSleepLogs(dir, num_days):
 
 	output_file = log_dir + "sleep.json"
+
+	if os.path.exists(output_file):
+		if os.stat(output_file).st_size == 0:
+			logging.info("File {} exists, but is zero bytes, continuing...".format(output_file))
+		else:
+			logging.info("File {} exists, not overwriting it!".format(output_file))
+			return()
+			
 	logging.info("Opening output file {}...".format(output_file))
 	output = open(output_file, "w")
 
@@ -114,6 +122,14 @@ def heartrateRowToData(row):
 def loopHeartrateLogs(dir, num_days):
 
 	output_file = log_dir + "heartrate.json"
+
+	if os.path.exists(output_file):
+		if os.stat(output_file).st_size == 0:
+			logging.info("File {} exists, but is zero bytes, continuing...".format(output_file))
+		else:
+			logging.info("File {} exists, not overwriting it!".format(output_file))
+			return()
+			
 	logging.info("Opening output file {}...".format(output_file))
 	output = open(output_file, "w")
 
