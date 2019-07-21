@@ -24,8 +24,10 @@ logging.basicConfig(level = logging.INFO, format='%(asctime)s.%(msecs)03d: %(lev
 
 parser = argparse.ArgumentParser(description = 
 	"Parse Fitbit logs and write them out in files for Splunk")
-parser.add_argument('directory', metavar = 'DIRECTORY', type = str, nargs = 1,
+parser.add_argument('--directory', metavar = 'DIRECTORY', type = str, required = True,
                     help = "Path to user-site-export/ direcotry in your Fitbit export")
+parser.add_argument('--num-days', type = int, default = 30,
+                    help = "How many days to go back in time (default: 30)")
 
 args = parser.parse_args()
 logging.info("Args: {}".format(args))
@@ -52,11 +54,13 @@ def sleepRowToData(row):
 #
 # Loop through our directory for sleep logs
 #
-def loopSleepLogs(dir):
+def loopSleepLogs(dir, num_days):
 
 	output_file = log_dir + "sleep.json"
 	logging.info("Opening output file {}...".format(output_file))
 	output = open(output_file, "w")
+
+	now = datetime.datetime.now()
 
 	for filename in os.listdir(dir):
 
@@ -72,6 +76,13 @@ def loopSleepLogs(dir):
 
 		logging.info("Writing {} rows to {}...".format(len(rows), output_file))
 		for row in rows:
+
+			event_date = datetime.datetime.strptime(row["dateOfSleep"], "%Y-%m-%d")
+			delta = (now - event_date).days
+			if delta > num_days:
+				logging.info("Skipping sleep on {} as it is older than {} days".format(event_date, num_days))
+				continue
+
 			data = sleepRowToData(row)
 			output.write(json.dumps(data) + "\n")
 
@@ -97,15 +108,23 @@ def heartrateRowToData(row):
 #
 # Loop through our directory for heartrate logs
 #
-def loopHeartrateLogs(dir):
+def loopHeartrateLogs(dir, num_days):
 
 	output_file = log_dir + "heartrate.json"
 	logging.info("Opening output file {}...".format(output_file))
 	output = open(output_file, "w")
 
+	now = datetime.datetime.now()
+
 	for filename in os.listdir(dir):
 
 		if not filename.startswith("heart_rate-"):
+			continue
+
+		event_date = datetime.datetime.strptime(filename, "heart_rate-%Y-%m-%d.json")
+		delta = (now - event_date).days
+		if delta > num_days:
+			logging.info("Skipping heartrate on {} as it is older than {} days".format(event_date, num_days))
 			continue
 
 		filename = dir + "/" + filename
@@ -129,13 +148,11 @@ def loopHeartrateLogs(dir):
 #
 def main(args):
 
-	directory = args.directory[0]
+	if not os.path.exists(args.directory):
+		raise Exception("Path {} does not exist!".format(args.directory))
 
-	if not os.path.exists(directory):
-		raise Exception("Path {} does not exist!".format(directory))
-
-	loopSleepLogs(directory)
-	loopHeartrateLogs(directory)
+	loopSleepLogs(args.directory, args.num_days)
+	loopHeartrateLogs(args.directory, args.num_days)
 	
 main(args)
 
