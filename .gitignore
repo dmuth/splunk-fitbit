@@ -6,9 +6,11 @@
 # Steve Jobs
 .DS_Store
 
+# Ignore raw fitbit data
+fitbit/
+
 # Ignore generated file
 user-prefs.conf
-
 
 # Ignore Splunk Lab
 splunk-data/
