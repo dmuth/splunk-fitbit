@@ -26,8 +26,10 @@ parser = argparse.ArgumentParser(description =
 	"Parse Fitbit logs and write them out in files for Splunk")
 parser.add_argument('--directory', metavar = 'DIRECTORY', type = str, required = True,
                     help = "Path to user-site-export/ direcotry in your Fitbit export")
-parser.add_argument('--num-days', type = int, default = 30,
-                    help = "How many days to go back in time (default: 30)")
+parser.add_argument('--num-days-sleep', type = int, default = 90,
+                    help = "How many days of sleep data to process (default: 90)")
+parser.add_argument('--num-days-heartrate', type = int, default = 30,
+                    help = "How many days of heartrate data to process (default: 30)")
 
 args = parser.parse_args()
 logging.info("Args: {}".format(args))
@@ -151,8 +153,8 @@ def main(args):
 	if not os.path.exists(args.directory):
 		raise Exception("Path {} does not exist!".format(args.directory))
 
-	loopSleepLogs(args.directory, args.num_days)
-	loopHeartrateLogs(args.directory, args.num_days)
+	loopSleepLogs(args.directory, args.num_days_sleep)
+	loopHeartrateLogs(args.directory, args.num_days_heartrate)
 	
 main(args)
 
