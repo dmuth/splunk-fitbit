@@ -13,6 +13,7 @@ cd ..
 echo "# "
 echo "# Pushing container to Docker Hub..."
 echo "# "
+docker push dmuth1/splunk-fitbit-python
 docker push dmuth1/splunk-fitbit
 
 echo "# Done!"
