@@ -58,7 +58,6 @@ then
 elif test "$1" == "--devel-splunk"
 then
 	DEVEL_SPLUNK=1
-	ARG1="--devel"
 
 fi
 
