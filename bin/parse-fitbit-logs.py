@@ -78,6 +78,51 @@ def loopSleepLogs(dir):
 	output.close()
 
 
+#
+# Extract key pieces of data from a row of Fitbit's heartrate data.
+#
+def heartrateRowToData(row):
+
+	retval = {}
+
+	date_time_obj = datetime.datetime.strptime(row["dateTime"], "%m/%d/%y %H:%M:%S")
+	date = date_time_obj.strftime("%Y-%m-%dT%H:%M:%S.000")
+	retval["dateTime"] = date
+	retval["bpm"] = row["value"]["bpm"]
+	retval["confidence"] = row["value"]["confidence"]
+
+	return(retval)
+
+
+#
+# Loop through our directory for heartrate logs
+#
+def loopHeartrateLogs(dir):
+
+	output_file = log_dir + "heartrate.json"
+	logging.info("Opening output file {}...".format(output_file))
+	output = open(output_file, "w")
+
+	for filename in os.listdir(dir):
+
+		if not filename.startswith("heart_rate-"):
+			continue
+
+		filename = dir + "/" + filename
+		logging.info("Reading file {}...".format(filename))
+
+		file = open(filename)
+		rows = json.load(file)
+		file.close()
+
+		logging.info("Writing {} rows to {}...".format(len(rows), output_file))
+		for row in rows:
+			data = heartrateRowToData(row)
+			output.write(json.dumps(data) + "\n")
+
+	output.close()
+
+
 
 #
 # Our main entry point.
@@ -90,12 +135,8 @@ def main(args):
 		raise Exception("Path {} does not exist!".format(directory))
 
 	loopSleepLogs(directory)
+	loopHeartrateLogs(directory)
 	
-	# TEST/TODO:
-	# - Loop through heartrate files
-	# - Open each file, print output to /logs/heartrate.json
-	#
-
 main(args)
 
 
