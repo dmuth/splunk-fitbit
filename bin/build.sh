@@ -21,7 +21,7 @@ docker build . -f Dockerfile-splunk -t splunk-fitbit
 echo "# "
 echo "# Tagging container..."
 echo "# "
-docker tag splunk-yelp-python dmuth1/splunk-fitbit-python
+docker tag splunk-fitbit-python dmuth1/splunk-fitbit-python
 docker tag splunk-fitbit dmuth1/splunk-fitbit
 
 echo "# Done!"
