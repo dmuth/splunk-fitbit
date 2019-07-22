@@ -28,8 +28,8 @@ parser.add_argument('--num-days-sleep', type = int, default = 90,
                     help = "How many days of sleep data to process (default: 90)")
 parser.add_argument('--num-days-heartrate', type = int, default = 30,
                     help = "How many days of heartrate data to process (default: 30)")
-parser.add_argument('--rollup-interval', type = int, default = 60,
-                    help = "How many seconds to do rollups into for heartrate data. (default: 60)")
+parser.add_argument('--rollup-interval', type = int, default = 300,
+                    help = "How many seconds to do rollups into for heartrate data. (default: 300)")
 parser.add_argument("--force", action = "store_true", 
 	help = "Force overwriting non-zero byte files even if they exist!")
 
