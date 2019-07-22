@@ -27,6 +27,8 @@ parser.add_argument('--num-days-sleep', type = int, default = 90,
                     help = "How many days of sleep data to process (default: 90)")
 parser.add_argument('--num-days-heartrate', type = int, default = 30,
                     help = "How many days of heartrate data to process (default: 30)")
+parser.add_argument("--force", action = "store_true", 
+	help = "Force overwriting non-zero byte files even if they exist!")
 
 try:
 	args = parser.parse_args()
@@ -57,7 +59,7 @@ def sleepRowToData(row):
 #
 # Loop through our directory for sleep logs
 #
-def loopSleepLogs(dir, num_days):
+def loopSleepLogs(dir, num_days, force):
 
 	output_file = log_dir + "sleep.json"
 
@@ -65,8 +67,11 @@ def loopSleepLogs(dir, num_days):
 		if os.stat(output_file).st_size == 0:
 			logging.info("File {} exists, but is zero bytes, continuing...".format(output_file))
 		else:
-			logging.info("File {} exists, not overwriting it!".format(output_file))
-			return()
+			if not force:
+				logging.info("File {} exists, not overwriting it!".format(output_file))
+				return()
+			else:
+				logging.info("--force specified, overwriting {}".format(output_file))
 			
 	logging.info("Opening output file {}...".format(output_file))
 	output = open(output_file, "w")
@@ -119,7 +124,7 @@ def heartrateRowToData(row):
 #
 # Loop through our directory for heartrate logs
 #
-def loopHeartrateLogs(dir, num_days):
+def loopHeartrateLogs(dir, num_days, force):
 
 	output_file = log_dir + "heartrate.json"
 
@@ -127,8 +132,11 @@ def loopHeartrateLogs(dir, num_days):
 		if os.stat(output_file).st_size == 0:
 			logging.info("File {} exists, but is zero bytes, continuing...".format(output_file))
 		else:
-			logging.info("File {} exists, not overwriting it!".format(output_file))
-			return()
+			if not force:
+				logging.info("File {} exists, not overwriting it!".format(output_file))
+				return()
+			else:
+				logging.info("--force specified, overwriting {}".format(output_file))
 			
 	logging.info("Opening output file {}...".format(output_file))
 	output = open(output_file, "w")
@@ -171,8 +179,8 @@ def main(args):
 	if not os.path.exists(directory):
 		raise Exception("Path {} does not exist!".format(directory))
 
-	loopSleepLogs(directory, args.num_days_sleep)
-	loopHeartrateLogs(directory, args.num_days_heartrate)
+	loopSleepLogs(directory, args.num_days_sleep, args.force)
+	loopHeartrateLogs(directory, args.num_days_heartrate, args.force)
 	
 main(args)
 
