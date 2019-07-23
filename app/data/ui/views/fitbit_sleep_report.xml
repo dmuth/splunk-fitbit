@@ -117,4 +117,64 @@
       </chart>
     </panel>
   </row>
+  <row>
+    <panel>
+      <title>Good Nights in the last Month</title>
+      <single>
+        <search>
+          <query>index=main source="/logs/sleep.json" earliest=-1y@mon | eval hours=minutesAsleep / 60 | timechart span=1d sum(hours) AS hours | eval recommended=7 |eval diff=hours-recommended | eval Good=case(diff &lt; 0, "Bad", diff &gt;= 0, "Good") |search Good="Good" | timechart span=1mon usenull=f count by Good</query>
+          <earliest>-1h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="height">200</option>
+        <option name="colorBy">trend</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0xdc4e41","0xf8be34","0x53a051"]</option>
+        <option name="rangeValues">[10,20]</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unit">Nights</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Bad Nights in the last Month</title>
+      <single>
+        <search>
+          <query>index=main source="/logs/sleep.json" earliest=-1y@mon | eval hours=minutesAsleep / 60 | timechart span=1d sum(hours) AS hours | eval recommended=7 |eval diff=hours-recommended | eval Good=case(diff &lt; 0, "Bad", diff &gt;= 0, "Good") |search Good="Bad" | timechart span=1mon usenull=f count by Good</query>
+          <earliest>-1h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="height">200</option>
+        <option name="colorBy">trend</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+        <option name="rangeValues">[10,20]</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unit">Nights</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+  </row>
 </form>
