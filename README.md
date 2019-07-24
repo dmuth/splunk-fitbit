@@ -58,6 +58,11 @@ Mostly for my benefit, these are the scripts that I use to make my life easier:
 
 ## Notes/Bugs
 
+- Don't bother trying to get steps--the data in the export doesn't match what's in the dashboard at ALL.  Step counts are wrong, days are missing, etc.  If Fitbit fixes this, then I will add in support. :-)
+- I can't seem to get rangemaps working for nightly sleep hours, which is frustrating
+- Heartrate data has an insane volume--nearly as often as 1 reading every 5 seconds.  So my import script will do rollup and output the avg/min/max/mean of all values.  By default, the rollup period is 5 minutes.  This can be adjusted, but may break certain assumptions in the graphs.
+- I was able to approximate, but not perfectly match Fitbit's resting heartrate as reported on my personal dashboard on the site.  I ended up grabbing the 6 periods with the lowest minimum heartrate each day, and average those readings out to get a daily value.  Not great, not terrible.
+   - I suspect that Fitbit's readings come from having higher granularity of the data, using only readings from the deepest part of sleep, and possibly throwing in a weighted average as well.
 
 
 ## Credits
