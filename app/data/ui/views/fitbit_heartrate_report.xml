@@ -21,7 +21,14 @@
 | top 6 min_bpm by Day
 | eval min_bpm = min_bpm * -1
 | stats avg(min_bpm) AS min_bpm by Day
-| eval min_bpm = floor(min_bpm)</query>
+| eval min_bpm = floor(min_bpm)
+| eval _time=strptime(Day, "%b %d, %Y")
+| fields - Day
+| timechart span=1d min(min_bpm) AS min_bpm
+| search min_bpm=*
+| reverse 
+| streamstats current=t count AS SERIAL | where SERIAL &gt; 1 
+| reverse | fields - SERIAL</query>
           <earliest>$time.earliest$</earliest>
           <latest>$time.latest$</latest>
           <sampleRatio>1</sampleRatio>
