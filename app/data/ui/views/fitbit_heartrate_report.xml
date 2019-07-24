@@ -92,6 +92,7 @@
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
         </search>
+        <option name="height">200</option>
         <option name="colorBy">trend</option>
         <option name="colorMode">none</option>
         <option name="drilldown">none</option>
@@ -132,6 +133,7 @@
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
         </search>
+        <option name="height">200</option>
         <option name="colorBy">trend</option>
         <option name="colorMode">none</option>
         <option name="drilldown">none</option>
