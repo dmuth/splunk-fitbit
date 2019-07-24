@@ -118,13 +118,13 @@
         <search>
           <query>index=main source="/logs/heartrate.json" earliest=-390d
 | bin _time span=1d as Day
-| eval max_bpm = max_bpm * -1
+| eval max_bpm = min_bpm * -1
 | top 6 max_bpm by Day
 | eval max_bpm = max_bpm * -1
 | eval _time=Day
 | timechart span=1d avg(max_bpm) AS max_bpm
 | eval max_bpm = floor(max_bpm)
-| timechart span=30d min(max_bpm)
+| timechart span=30d max(max_bpm)
 | reverse 
 | streamstats current=t count AS SERIAL | where SERIAL &gt; 1 
 | reverse | fields - SERIAL</query>
