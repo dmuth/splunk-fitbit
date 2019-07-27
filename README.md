@@ -24,7 +24,7 @@ app I built to effortlessly run Splunk in a Docker container.
 
 # Screenshots
 
-<a href="img/fitbit-heartrate-report.png"><img src="img/fitbit-heartrate-report.png" width="300" /></a> <a href="img/fitbit-sleep-dashboard.png"><img src="img/fitbit-sleep-dashboard.png" width="300" /></a>
+<a href="img/fitbit-sleep-dashboard.png"><img src="img/fitbit-sleep-dashboard.png" width="300" /></a> <a href="img/fitbit-heartrate-report.png"><img src="img/fitbit-heartrate-report.png" width="300" /></a> 
 
 
 ## Requirements
