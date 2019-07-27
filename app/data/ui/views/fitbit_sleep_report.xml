@@ -200,4 +200,22 @@
       </single>
     </panel>
   </row>
+  <row>
+    <panel>
+      <title>Need Help?</title>
+      <html>
+      <ul>
+        <li>
+            <a href="https://github.com/dmuth/splunk-fitbit">Splunk Fitbit on GitHub</a>
+          </li>
+        <li>
+            <a href="https://github.com/dmuth/splunk-fitbit/issues">Open an Issue in GitHub</a>
+          </li>
+        <li>
+            <a href="https://twitter.com/dmuth">Say "hi" on Twitter!</a>
+        </li>
+      </ul>
+    </html>
+    </panel>
+  </row>
 </form>
